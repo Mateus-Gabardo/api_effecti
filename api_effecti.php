@@ -3,16 +3,7 @@ header('Content-Type: application/json');
 require './services/interceptor_sipac.php';
 
 
-/*
 
- * 
- * se for get busca se for post atualiza. 
- * Criar configurar banco de dados para salvar
- * realizar documentacao corerta com m script de criacao de tabela;
- * disponibilizar o link no git
- * 
- * busca os dados verifica se existe no banco; se existe ignora se não atualiza.
-*/
 if($_SERVER['REQUEST_METHOD'] === 'GET'){
     $oInterceptor = new InterceptorSipac();
     $oInterceptor->getAllLicitacoesToJson();

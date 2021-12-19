@@ -38,7 +38,6 @@ class InterceptorSipac {
         $oModelLicitacao->setLinkForItens(utf8_encode($dado[6]));
         
         $aLicitacoes[] = $oModelLicitacao->toJson();
-        
       }
       return $aLicitacoes;
   }
@@ -70,15 +69,16 @@ class InterceptorSipac {
       return $aItensLicitacao;
   }
   
+  /**
+   * Extrai os dados das licitações disponíveis no portal
+   * @return array
+   */
   private function getLicitacoesByHtml() {
       $tagLicitacoes = 'tbody';
       // Pega-se todo o conteudo html
       $oHtml = $this->getHtml(self::ENDERECO_SIPAC);
-      // Encontra somente a área de licitações
-      $oBody = $this->getDadosEntreTags($oHtml, $tagLicitacoes);
-      // Cria um array com licitação
-      $aLicitacoes  = explode('</tr>', $oBody);
-      array_pop($aLicitacoes);
+      // Encontra somente a área de licitações 
+      $aLicitacoes = $this->getDadosBody($oHtml);
       // remove as tags desnecessárias
       $aLicitacoes = $this->removeAllTagsByArray($aLicitacoes, ['td','a']);
       $aNewLicitacoes = [];
@@ -99,19 +99,20 @@ class InterceptorSipac {
           $aNewLicitacoes[] = $aItem;
       }
       
-      //$aNewLicitacoes[] = $this->getItensLicitacaoByHtml(1549);
      return $aNewLicitacoes;
   }
   
+  /**
+   * Extrai os dados dos itens da licitação a partir de um id informado
+   * @param int $idEdital
+   * @return array
+   */
   private function getItensLicitacaoByHtml($idEdital) {
       $sLink = InterceptorSipac::HOST_ITENS_EDITAL.$idEdital;
       $oHtml = $this->getHtml($sLink);
-      $oTeste = $this->getDadosEntreTags($oHtml, 'tbody');
-      $aHtml = explode('tbody>', $oHtml);
-      $aHtml = explode('</tbody>', $aHtml[1]);
-      $oBody = $aHtml[0];
-      $aItens  = explode('</tr>', $oBody);
-      array_pop($aItens);
+      
+      $aItens = $this->getDadosBody($oHtml);
+      
       $aItens = $this->removeAllTagsByArray($aItens, ['td']);
       
       $newItens = [];
@@ -146,7 +147,12 @@ class InterceptorSipac {
       }      
       return $aAta;
   }
-  
+  /**
+   * Realiza o filtro de todos os html a partir de um array de dados
+   * @param array $aDados - dados a serem filtrados
+   * @param type $tag_excessoes - Tags que não se dejesa filtrar
+   * @return array
+   */
   private function removeAllTagsByArray(array $aDados, $tag_excessoes = null){
       $newDados = [];
       foreach ($aDados as $item) {
@@ -170,6 +176,12 @@ class InterceptorSipac {
       return $url;
   }
   
+  /**
+   * Retira o id da licitação a partir do link para os itens da mesma
+   * Será utilizada para chamar os itens de cada licitação
+   * @param String $link
+   * @return int id / false
+   */
   private function extraiIdByLink($link) {
       $aLinks = explode('id=', $link);
       if(isset($aLinks[1])){
@@ -180,25 +192,18 @@ class InterceptorSipac {
   }
   
   /**
-   * Realiza o tratamento de um conteúdo HTML passado trazendo tudo o que esta entre a tag passada como parâmetro.
+   * Retorna somente os dados dentro da tag tbody do conteúdo html
    * 
-   * A expressão regular filtra o conteúdo pelos seguintes parametros:
-   * <ul><b>' \b ' </b> garante que um erro de digitação (como <codeS>) não seja capturado</ul>
-   * <ul><b>' [^>]* ' </b> captura o conteúdo de uma tag com atributos como por exemplo uma classe</ul>
-   * <ul><b>' s '</b> captura conteúdos com novas linhas</ul>
-   * 
-   * @param String $html - conteúdo a ser filtrado
-   * @param String $nomeTag - tag que será utilizada como parametro para o filtro
-   * @return String - conteúdo que se encontra entre a tag corresponte. Retorna false quando nada form encontrado.
+   * @param String $html Html com a qual se dejesa realizar o filtro.
+   * return Array
    */
-  private function getDadosEntreTags($html, $nomeTag) {
-      $aMatchs;
-      $expressao = "#<\s*?$nomeTag\b[^>]*>(.*?)</$nomeTag\b[^>]*>#s";
-      preg_match($expressao, $html, $aMatchs);
-      if(isset($aMatchs[1])){
-          return $aMatchs[1];
-      }
-      return false;
+  private function getDadosBody($html) {
+      $aHtml = explode('tbody>', $html);
+      $aHtml = explode('</tbody>', $aHtml[1]);
+      $oBody = $aHtml[0];
+      $aItens  = explode('</tr>', $oBody);
+      array_pop($aItens);
+      return $aItens;
   }
   
   /**

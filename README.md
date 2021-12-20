@@ -29,7 +29,7 @@
 
 ## Recurso URL
 ```
-http://localhost/effecti_api/api_effecti.php/
+http://localhost/api_effecti/api_effecti.php
 ```
 
 ## Informações do recurso

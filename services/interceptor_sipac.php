@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__.'\..\model\model_item_licitacao.php';
-require_once __DIR__.'\..\model\model_licitacao.php';
+require_once __DIR__.'/../model/model_item_licitacao.php';
+require_once __DIR__.'/../model/model_licitacao.php';
 
 class InterceptorSipac {
     private const ENDERECO_SIPAC    = 'https://sig.ifsc.edu.br/public/listaEditais.do?tipo=2&aba=p-editais-atas&buscaTodas=true&acao=544';

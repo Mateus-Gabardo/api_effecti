@@ -5,10 +5,8 @@
         <group>
             <file>file:/C:/wamp64/www/effecti_api/api_effecti.php</file>
             <file>file:/C:/wamp64/www/effecti_api/model/model_item_licitacao.php</file>
+            <file>file:/C:/wamp64/www/effecti_api/README.md</file>
             <file>file:/C:/wamp64/www/effecti_api/model/model_licitacao.php</file>
-            <file>file:/C:/wamp64/www/effecti_api/persistencia/connection.php</file>
-            <file>file:/C:/wamp64/www/effecti_api/config.php</file>
-            <file>file:/C:/wamp64/www/effecti_api/persistencia/persistencia_licitacao.php</file>
             <file>file:/C:/wamp64/www/effecti_api/services/interceptor_sipac.php</file>
         </group>
     </open-files>

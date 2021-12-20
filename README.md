@@ -31,7 +31,10 @@
 ```
 http://localhost/api_effecti/api_effecti.php
 ```
-
+## content type 
+```
+application/x-www-form-urlencoded
+```
 ## Informações do recurso
 
 | *Formato de retorno* | *JSON* |
@@ -42,13 +45,13 @@ http://localhost/api_effecti/api_effecti.php
 
 ### GET
 
-|*Name* | *Required* | *Description* |
+|*Key* | *Required* | *Description* |
 | ------------- |:-------------:| -----|
 |  --- | Não  | Retorna os dados da licitação, de acordo com seu modelo|
 
 
 ### POST
-| *Name*  |*Required* |*Valor* |*Description* |
+| *key*  |*Required* |*Value* |*Description* |
 | ------------- |:-------------:|:-------------:| -----|
 | operacao| Required | busca_licitacoes|Retorna os dados das licitações disponíveis de acordo com o modelo de licitação.|
 | operacao| Required | busca_itens | Retorna os dados dos itens referentes a uma licitação específica. O id da licitação com a qual se quer estas informações deve ser passada pelo parametro chave.|
